@@ -1,9 +1,12 @@
+resource "random_string" "storage_suffix" {
+  length  = 6
+  special = false
+  upper   = false
+}
+
 resource "azurerm_storage_account" "documents" {
-  name = replace(
-    lower("st${var.project_name}${var.environment}"),
-    "-",
-    ""
-  )
+  # Azure names allow only 3-24 lowercase alphanumeric characters.
+  name = "st${substr(replace(lower("${var.project_name}${var.environment}"), "/[^a-z0-9]/", ""), 0, 16)}${random_string.storage_suffix.result}"
 
   resource_group_name = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location

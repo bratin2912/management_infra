@@ -15,8 +15,14 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   admin_ssh_key {
     username   = var.admin_username
-    public_key = file(var.ssh_public_key_path)
+    public_key = file(pathexpand(var.ssh_public_key_path))
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  depends_on = [azurerm_network_interface_security_group_association.main]
 
   os_disk {
     caching              = "ReadWrite"
@@ -33,6 +39,8 @@ resource "azurerm_linux_virtual_machine" "main" {
 
   custom_data = base64encode(<<-EOF
     #!/bin/bash
+    set -euo pipefail
+    export DEBIAN_FRONTEND=noninteractive
 
     apt-get update -y
     apt-get install -y \

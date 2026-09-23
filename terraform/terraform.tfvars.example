@@ -1,0 +1,9 @@
+subscription_id     = "00000000-0000-0000-0000-000000000000"
+project_name        = "practice-management"
+environment         = "prod"
+location            = "Central India"
+vm_size             = "Standard_B2s"
+admin_username      = "azureadmin"
+ssh_public_key_path = "~/.ssh/id_ed25519.pub"
+# Replace this documentation address with your administrator's public IP/CIDR.
+ssh_allowed_cidr = "203.0.113.10/32"
